@@ -1,4 +1,4 @@
-# cms-admin-service
+# CMS-Admin-Service
 
 ## Synopsis
 
@@ -181,8 +181,23 @@ CMS Admin Service provides API interface for content managers to upsert content 
 ```
 - Method: GET
 - Request line:
+    - Path params
+      - type: type of the resource
     - Query params
-        - status: String field 
+        - pageSize: Integer field  (optional)
+        - pageNumber: Integer field  (optional)
+```
+
+/admin/getResourceByIds
+
+```
+- Method: GET
+- Request line:
+    
+    - Query params
+        - ids: String (Command separated string of UUIDs)
+        - pageSize: Integer field  (optional)
+        - pageNumber: Integer field  (optional)
 ```
 
 ##### DELETE CALLS
