@@ -112,41 +112,74 @@ CMS Admin Service provides API interface for content managers to upsert content 
 
 ## API Listing
 
-#####  PUT CALLS
+#####  POST CALLS
 
-/admin/insert
-
-
-
-##### POST CALLS
+/admin/
 
 ```
 - Method: POST
 - Request line:
-    - Path params
-        - id: UUID of the resource
+    
     - Body
         Content-type: application/json
         Encoded as a JSON Object for the fields to be updated.
 
-```
+    Entity Type is the name of the collection.
+    Code creates a new UUID for the inserted object.    
 
-/admin/update/vodtitle/{id}
-
-/admin/update/contentprovider/{id}
-
-/admin/update/series/{id}
-
-/admin/update/season/{id}
-
-/admin/update/channel/{id}
-
-/admin/update/schedule/{id}
-
-/admin/update/program/{id}
+    
 
 ```
-- Method: POST
+
+
+
+##### PUT CALLS
+
+/admin/{id}
+
+
+```
+- Method: PUT
+- Request line:
+    - Path Param 
+        entityType : name of collection
+        id: Object Id
+    - Body
+        Content-type: application/json
+        Encoded as a JSON Object for the fields to be updated.
+
+    Entity Type is the name of the collection.
+
+    | Field | Data Type | Description |
+    | :---:   |   :---:   |   :---:              |
+    | _id    | String | ObjectId	|
+    | externalId    | String | UniqueId	|
+    | bpName    | String | {VODTitle / Series / Season / Provider/ Channel / Program / Schedule}	|
+    | bpVersion    | Integer | 	|
+    | urn    | String | Concatenate (bpName,externalId)	|
+    | status    | String | 	|
+    | entityType    | String | 	|
+    | title    | String | 	|
+
+    Rest JSON data are free flow 
+    
+       
+
+```
+
+
+Example:
+
+
+
+This can be full document replace or just set particular fields.
+
+
+
+/admin/batchupdate
+
+```
+- Method: PUT
 - Request line:
 
     - Body
@@ -156,15 +189,13 @@ CMS Admin Service provides API interface for content managers to upsert content 
 
 ```
 
-/admin/batchupdate
-
 
   Post Request Body structure of each JSON for this request
 
   | Field | Data Type | Description |
   | :---:   |   :---:   |   :---:              |
   | _id    | String | UUID for the resource to be updated	|
-  | type    | String | Resource Type	|
+  | entityType    | String | Resource Type / Collection Name	|
     | data    | Object | Key-Value pairs for fields to be updated	|
 
 
@@ -173,10 +204,10 @@ CMS Admin Service provides API interface for content managers to upsert content 
 
 ##### GET CALLS
 
-/admin/getResourceById/{id}
+/admin/{entityType}/{id}
 
 
-/admin/getResourceByType/{type}
+/admin/{entityType}
 
 ```
 - Method: GET
@@ -188,7 +219,7 @@ CMS Admin Service provides API interface for content managers to upsert content 
         - pageNumber: Integer field  (optional)
 ```
 
-/admin/getResourceByIds
+/admin/{entityType}
 
 ```
 - Method: GET
@@ -200,6 +231,17 @@ CMS Admin Service provides API interface for content managers to upsert content 
         - pageNumber: Integer field  (optional)
 ```
 
-##### DELETE CALLS
+#####  CALLS
 
-/admin/deleteResourceById/{id}
+/admin/{entityType}
+
+```
+- Method: POST
+- Request line:
+
+    - Body:
+    Content-type: application/json
+    type: DELETE
+    ids: Array of String
+    
+```
