@@ -131,6 +131,18 @@ CMS Admin Service provides API interface for content managers to upsert content 
 
 ```
 
+| Field | Data Type | Description |
+| :---:   |   :---:   |   :---:              |
+| _id    | String | ObjectId	|
+| externalId    | String | UniqueId	|
+| bpName    | String | {VODTitle / Series / Season / Provider/ Channel / Program / Schedule}	|
+| bpVersion    | Integer | 	|
+| urn    | String | Concatenate (bpName,externalId)	|
+| status    | String | 	|
+| entityType    | String | 	|
+| title    | String | 	|
+
+Rest JSON data are free flow 
 
 
 ##### PUT CALLS
@@ -150,20 +162,7 @@ CMS Admin Service provides API interface for content managers to upsert content 
 
     Entity Type is the name of the collection.
 
-    | Field | Data Type | Description |
-    | :---:   |   :---:   |   :---:              |
-    | _id    | String | ObjectId	|
-    | externalId    | String | UniqueId	|
-    | bpName    | String | {VODTitle / Series / Season / Provider/ Channel / Program / Schedule}	|
-    | bpVersion    | Integer | 	|
-    | urn    | String | Concatenate (bpName,externalId)	|
-    | status    | String | 	|
-    | entityType    | String | 	|
-    | title    | String | 	|
 
-    Rest JSON data are free flow 
-    
-       
 
 ```
 
