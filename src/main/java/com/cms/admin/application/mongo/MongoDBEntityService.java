@@ -5,6 +5,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -35,8 +36,9 @@ public class MongoDBEntityService {
             mongoTemplate.getConverter().write(entity, dbDoc); //it is the one spring use for convertions.
             Update update = Update.fromDBObject(dbDoc);
 
-
-            entity = mongoTemplate.findAndModify(query, update, CMSEntity.class, entity.getEntityType());
+            FindAndModifyOptions options = new FindAndModifyOptions();
+            options.returnNew(true);
+            entity = mongoTemplate.findAndModify(query, update, options, CMSEntity.class, entity.getEntityType());
         } else {
             mongoTemplate.insert(entity, entity.getEntityType());
         }
