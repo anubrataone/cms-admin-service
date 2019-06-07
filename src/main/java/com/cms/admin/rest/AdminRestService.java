@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.ws.rs.core.MultivaluedMap;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -70,6 +71,69 @@ public class AdminRestService {
         }
     }
 
+
+    @RequestMapping(value = "batchinsert", method = RequestMethod.POST)
+    public ResponseData<List<CMSEntity>> createBatchEntity(@RequestBody List<CMSEntity> entities) {
+
+        //Step 1: Validate input request  via required parameters
+
+        //Step 2: Validate input header
+        if (entities == null || entities.size() == 0) {
+            ResponseData<List<CMSEntity>> responseData = createResponse("Entity is null/empty");
+            responseData.setData(entities);
+            return responseData;
+        }
+
+        List<CMSEntity> addedEntities = new ArrayList<>();
+        //Step 3: add record
+        try {
+            entities.parallelStream().forEach(entity -> {
+                ResponseData<CMSEntity> singleEntityRespData = createEntity(entity);
+                addedEntities.add(singleEntityRespData.getData());
+            });
+
+            ResponseData<List<CMSEntity>> responseData = createResponse("Success");
+            responseData.setData(addedEntities);
+
+            return responseData;
+        } catch (Exception e) {
+
+            ResponseData<List<CMSEntity>> responseData = createResponse("Failed: " + ExceptionUtils.getStackTrace(e));
+            return responseData;
+        }
+    }
+
+    @RequestMapping(value = "batchupdate", method = RequestMethod.PUT)
+    public ResponseData<List<CMSEntity>> updateBatchEntity(@RequestBody List<CMSEntity> entities) {
+
+        //Step 1: Validate input request  via required parameters
+
+        //Step 2: Validate input header
+        if (entities == null || entities.size() == 0) {
+            ResponseData<List<CMSEntity>> responseData = createResponse("Entity is null/empty");
+            responseData.setData(entities);
+            return responseData;
+        }
+
+        List<CMSEntity> addedEntities = new ArrayList<>();
+        //Step 3: add record
+        try {
+            entities.parallelStream().forEach(entity -> {
+                ResponseData<CMSEntity> singleEntityRespData = updateEntity(entity.getId(), entity);
+                addedEntities.add(singleEntityRespData.getData());
+            });
+
+            ResponseData<List<CMSEntity>> responseData = createResponse("Success");
+            responseData.setData(addedEntities);
+
+            return responseData;
+        } catch (Exception e) {
+
+            ResponseData<List<CMSEntity>> responseData = createResponse("Failed: " + ExceptionUtils.getStackTrace(e));
+            return responseData;
+        }
+    }
+
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public ResponseData<CMSEntity> updateEntity(@PathVariable("id") String id, @RequestBody CMSEntity entity) {
 
@@ -103,12 +167,12 @@ public class AdminRestService {
         }
     }
 
-    @RequestMapping(value="delete",method = RequestMethod.DELETE)
+    @RequestMapping(value = "delete", method = RequestMethod.DELETE)
     public ResponseData<List<CMSEntity>> deleteEntityAction(@RequestBody List<CMSEntity> entities) {
         return deleteEntity(entities);
     }
 
-    @RequestMapping(value="delete",method = RequestMethod.POST)
+    @RequestMapping(value = "delete", method = RequestMethod.POST)
     public ResponseData<List<CMSEntity>> deleteEntity(@RequestBody List<CMSEntity> entities) {
 
         //Step 1: Validate input request  via required parameters
